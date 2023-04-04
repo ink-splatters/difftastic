@@ -33,6 +33,38 @@ requires Rust version 1.57 or later.
 You will also need a C++ compiler that supports C++14. If you're using
 GCC, you need at least version 8.
 
+
+### Experimental: nix develop (on macOS or Linux)
+
+Make sure Nix is installed for your system, as well as flake support is enabled, or you can temporary alias the nix command as:
+
+```shell
+alias nix="nix --experimental-features 'nix-command flakes'"
+```
+by specifyinmg `trusted-users` in the config, you are making sure Nix binary caches will be used, when appropriate,
+which significantly speeds up the compilation
+
+config example:
+```shell
+# cat /etc/nix/nix.conf
+
+build-users-group = nixbld
+trusted-users = youruser
+
+auto-optimise-store = true
+experimental-features = nix-command flakes
+```
+
+Run:
+
+```shell
+nix develop
+```
+
+This will spawn development shell with all the requirements installed.
+
+Build using `cargo`, as per instructions below (no need to specify compiler flags as they should be properly set).
+
 ### Build
 
 You can download and build [difftastic on
@@ -50,6 +82,14 @@ docs](https://github.com/alexcrichton/cc-rs#external-configuration-via-environme
 
 See [contributing](./contributing.md) for instructions on debug
 builds.
+
+### Experimental: nix build (on macOS or Linux)
+
+The project also can be built using `nix build`, without using `cargo` at all.
+
+TODO: this is currently broken
+
+
 
 ## (Optional) Install MIME Database
 
